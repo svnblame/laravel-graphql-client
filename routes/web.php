@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $response = Http::post('http://graph-api.test/graphql', [
+        'query' => '
+            query	{
+                posts {
+                data {
+                    title
+                    created_at
+                }
+                }
+            }
+        '
+        ]);
+
+        dd($response->json());
 });
